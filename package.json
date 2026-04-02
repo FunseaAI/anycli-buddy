@@ -1,0 +1,17 @@
+{
+  "name": "terminal-buddy",
+  "version": "1.0.0",
+  "description": "Standalone terminal companion sprite system extracted from Claude Code buddy",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "terminal-buddy": "./cli.js"
+  },
+  "scripts": {
+    "start": "node cli.js",
+    "demo": "node demo.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
