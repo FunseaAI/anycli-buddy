@@ -61,6 +61,16 @@ done
 
 chmod +x "$BUDDY_HOME/buddy-hook.sh" "$BUDDY_HOME/codex-buddy"
 
+# ── Create global command ────────────────────────────────────────
+# Symlink so `codex-buddy` works from any directory
+if [ -d /usr/local/bin ]; then
+    ln -sf "$BUDDY_HOME/codex-buddy" /usr/local/bin/codex-buddy 2>/dev/null && ok "Linked: codex-buddy → /usr/local/bin/" || true
+elif [ -d "$HOME/.local/bin" ]; then
+    mkdir -p "$HOME/.local/bin"
+    ln -sf "$BUDDY_HOME/codex-buddy" "$HOME/.local/bin/codex-buddy"
+    ok "Linked: codex-buddy → ~/.local/bin/"
+fi
+
 # ── Configure hooks ─────────────────────────────────────────────
 HOOKS_FILE="$HOME/.codex/hooks.json"
 if [ -f "$HOOKS_FILE" ]; then

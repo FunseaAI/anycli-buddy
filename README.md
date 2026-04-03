@@ -22,7 +22,11 @@ Your buddy watches your coding session, reacts to errors, celebrates fixes, and 
 curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install.sh | bash
 ```
 
-Then run: `~/.codex/buddy/codex-buddy`
+Then run from any project directory:
+
+```bash
+codex-buddy
+```
 
 ### Codex CLI (auto-install via AI)
 

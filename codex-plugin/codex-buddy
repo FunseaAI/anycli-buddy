@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # codex-buddy: 启动 Codex CLI + buddy 伴侣（tmux 上下分栏）
 # 用法: codex-buddy [codex 参数...]
+# 在当前目录启动，工作区不受影响。
 
 BUDDY_HOME="$HOME/.codex/buddy"
 SESSION="codex-buddy"
+WORK_DIR="$(pwd)"
 
 command -v tmux >/dev/null 2>&1 || { echo "需要 tmux: brew install tmux"; exit 1; }
 command -v node >/dev/null 2>&1 || { echo "需要 Node.js >= 18"; exit 1; }
@@ -25,12 +27,12 @@ if [ -n "$TMUX" ]; then
     exit 0
 fi
 
-# 新建 tmux session
+# 新建 tmux session（在用户当前工作目录启动）
 tmux kill-session -t "$SESSION" 2>/dev/null
 
-CODEX_CMD="codex $*; tmux kill-session -t $SESSION"
+CODEX_CMD="cd '$WORK_DIR' && codex $*; tmux kill-session -t $SESSION"
 
-tmux new-session -d -s "$SESSION" -x "$(tput cols)" -y "$(tput lines)" "$CODEX_CMD"
+tmux new-session -d -s "$SESSION" -x "$(tput cols)" -y "$(tput lines)" -c "$WORK_DIR" "$CODEX_CMD"
 tmux split-window -v -t "$SESSION" -l 6 "cd $BUDDY_HOME && node buddy-panel.js"
 tmux set-hook -t "$SESSION" after-resize-pane "resize-pane -t '$SESSION:0.1' -y 6"
 tmux select-pane -t "$SESSION:0.0"
