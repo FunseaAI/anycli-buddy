@@ -62,13 +62,18 @@ done
 chmod +x "$BUDDY_HOME/buddy-hook.sh" "$BUDDY_HOME/codex-buddy"
 
 # ── Create global command ────────────────────────────────────────
-# Symlink so `codex-buddy` works from any directory
-if [ -d /usr/local/bin ]; then
-    ln -sf "$BUDDY_HOME/codex-buddy" /usr/local/bin/codex-buddy 2>/dev/null && ok "Linked: codex-buddy → /usr/local/bin/" || true
-elif [ -d "$HOME/.local/bin" ]; then
-    mkdir -p "$HOME/.local/bin"
-    ln -sf "$BUDDY_HOME/codex-buddy" "$HOME/.local/bin/codex-buddy"
-    ok "Linked: codex-buddy → ~/.local/bin/"
+LINKED=false
+for BINDIR in /usr/local/bin "$HOME/.local/bin"; do
+    if [ -d "$BINDIR" ] || mkdir -p "$BINDIR" 2>/dev/null; then
+        if ln -sf "$BUDDY_HOME/codex-buddy" "$BINDIR/codex-buddy" 2>/dev/null; then
+            ok "Command: codex-buddy → $BINDIR/"
+            LINKED=true
+            break
+        fi
+    fi
+done
+if [ "$LINKED" = false ]; then
+    info "Could not create global command. Use full path: ~/.codex/buddy/codex-buddy"
 fi
 
 # ── Configure hooks ─────────────────────────────────────────────
@@ -101,8 +106,8 @@ fi
 echo ""
 ok "=== anycli-buddy installed! ==="
 echo ""
-echo -e "  Start:      ${CYAN}~/.codex/buddy/codex-buddy${NC}"
-echo -e "  Re-hatch:   ${DIM}rm ~/.codex/buddy/companion.json${NC}"
+echo -e "  Start:      ${CYAN}codex-buddy${NC}  (from any directory)"
+echo -e "  Re-hatch:   ${DIM}rm ~/.codex/buddy/companion.json && codex-buddy${NC}"
 echo -e "  Update:     ${DIM}curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install.sh | bash${NC}"
-echo -e "  Uninstall:  ${DIM}rm -rf ~/.codex/buddy && rm ~/.codex/hooks.json${NC}"
+echo -e "  Uninstall:  ${DIM}rm -rf ~/.codex/buddy && rm ~/.codex/hooks.json && rm -f /usr/local/bin/codex-buddy${NC}"
 echo ""
