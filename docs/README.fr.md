@@ -9,130 +9,132 @@
 <h1 align="center">🐾 AnyCLI-Buddy</h1>
 
 <p align="center">
-  <strong>Un compagnon ASCII animé pour votre agent de codage terminal.</strong><br>
-  Compatible avec <b>Codex CLI</b> · <b>OpenCode</b> · tout terminal
+  <strong>Un animal de compagnie terminal qui éclot d'un œuf et réagit à votre code.</strong>
 </p>
 
-```
-      .----.
-     / ✦  ✦ \    ── "bug squashed!"
-     |      |
-     ~`~``~`~
-      Pixa ★
-```
+<p align="center">
+  <img src="https://img.shields.io/badge/espèces-18-blue" alt="18 species">
+  <img src="https://img.shields.io/badge/raretés-5-purple" alt="5 rarity">
+  <img src="https://img.shields.io/badge/zéro-dépendances-green" alt="zero deps">
+  <img src="https://img.shields.io/github/stars/FunseaAI/anycli-buddy?style=social" alt="Stars">
+</p>
 
-Votre buddy surveille votre session de codage, réagit aux erreurs, célèbre les corrections et vous tient compagnie pendant les longues sessions de débogage.
-
-**18 espèces** · **5 niveaux de rareté** · **animations idle** · **bulles de dialogue** · **cérémonie d'éclosion**
+<p align="center">
+  <img src="demo.svg" alt="AnyCLI-Buddy Demo" width="600">
+</p>
 
 ---
 
-## Installation
+> **Votre buddy surveille votre session.** Il dit *"bug squashed!"* quand vous corrigez un bug, *"all green!"* quand les tests passent, et *"conflict! \*hides\*"* lors d'un conflit de merge. Sinon, il fait *zzZ*.
 
-### Codex CLI
+<br>
+
+## ⚡ Installation en une commande
+
+<table>
+<tr>
+<td><b>Codex CLI</b></td>
+<td>
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install.sh | bash
 ```
 
-Lancez depuis n'importe quel répertoire de projet :
-
-```bash
-codex-buddy
-```
-
-Ou dites directement à Codex :
-
-> Fetch and follow instructions from https://raw.githubusercontent.com/FunseaAI/anycli-buddy/refs/heads/main/.codex/INSTALL.md
-
-### OpenCode
+</td>
+</tr>
+<tr>
+<td><b>OpenCode</b></td>
+<td>
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install-opencode.sh | bash
 ```
 
-```bash
-opencode-buddy
-```
+</td>
+</tr>
+</table>
+
+Puis lancez **`codex-buddy`** ou **`opencode-buddy`** depuis n'importe quel répertoire.
 
 ---
 
-## Aperçu
-
-```
-┌─────────────────────────────────────────────┐
-│  >_ Codex CLI                               │
-│                                             │
-│  > corriger le bug d'auth                   │
-│  • Vérification null corrigée dans login.js │
-│                                             │
-├─────────────────────────────────────────────┤
-│        .----.                               │
-│       / ✦  ✦ \   ── "bug squashed!"        │
-│       |      |                              │
-│       ~`~``~`~                              │
-│        Pixa ★                               │
-└─────────────────────────────────────────────┘
-```
-
----
-
-## Fonctionnalités
+## ✨ Fonctionnalités
 
 ### 🥚 Cérémonie d'éclosion
 
-Le premier lancement joue une animation interactive : oscillation de l'œuf → fissures → éclatement → **révélation de l'espèce** → **vous le nommez** → les stats apparaissent une par une.
+L'œuf tremble → fissures → éclatement → **révélation de l'espèce** → **vous le nommez** → les stats apparaissent une par une.
 
-Les stats sont façonnées par votre style de codage réel — analysé à partir de l'historique git et de l'utilisation du shell.
+Les stats sont façonnées par votre **vrai historique git**.
 
 ### 🐾 18 espèces
 
-duck, goose, blob, cat, dragon, octopus, owl, penguin, turtle, snail, ghost, axolotl, capybara, cactus, robot, rabbit, mushroom, chonk
+<table>
+<tr><td>🦆 duck</td><td>🪿 goose</td><td>🫧 blob</td><td>🐱 cat</td><td>🐉 dragon</td><td>🐙 octopus</td></tr>
+<tr><td>🦉 owl</td><td>🐧 penguin</td><td>🐢 turtle</td><td>🐌 snail</td><td>👻 ghost</td><td>🦎 axolotl</td></tr>
+<tr><td>🦫 capybara</td><td>🌵 cactus</td><td>🤖 robot</td><td>🐰 rabbit</td><td>🍄 mushroom</td><td>😺 chonk</td></tr>
+</table>
 
-### ✨ Système de rareté
+### 🎲 Rareté & chapeaux
 
-| Rareté | Chance | Étoiles |
-|--------|--------|---------|
-| common | 60% | ★ |
-| uncommon | 25% | ★★ |
-| rare | 10% | ★★★ |
-| epic | 4% | ★★★★ |
-| legendary | 1% | ★★★★★ |
+| | Chance | Étoiles | Chapeaux |
+|:--|:--|:--|:--|
+| **common** | 60% | ★ | — |
+| **uncommon** | 25% | ★★ | couronne, haut-de-forme... |
+| **rare** | 10% | ★★★ | 〃 |
+| **epic** | 4% | ★★★★ | 〃 |
+| **legendary** | 1% | ★★★★★ | 〃 |
 
-### 📊 5 stats façonnées par votre style
+### 📊 5 stats basées sur votre style de codage
 
-| Stat | Influencée par |
-|------|----------------|
+| Stat | Ce qui la booste |
+|:--|:--|
 | **DEBUGGING** | Commits fix/debug dans git |
 | **PATIENCE** | Messages de commit détaillés |
-| **CHAOS** | Reverts, force push, codage nocturne |
-| **WISDOM** | Refactoring, utilisation de tests |
+| **CHAOS** | Reverts, force push, commits nocturnes |
+| **WISDOM** | Refactoring, tests |
 | **SNARK** | Utilisateur vim, codeur prolifique |
 
 ### 💬 Réactions contextuelles
 
-Le buddy lit le contenu réel de la conversation : bug corrigé → *"bug squashed!"*, tests réussis → *"all green!"*, déploiement → *"fingers crossed"*
+| Événement | Buddy dit |
+|:--|:--|
+| Bug corrigé | *"bug squashed!"* |
+| Tests réussis | *"all green!"* |
+| Tests échoués | *"test caught something"* |
+| Build réussi | *"it builds!"* |
+| `TypeError` | *"syntax demons!"* |
+| `git push` | *"shipped!"* |
+| Déploiement | *"fingers crossed"* |
+| Conflit de merge | *"conflict! \*hides\*"* |
 
 ---
 
-## Commandes
+## 🎮 Commandes
 
 | Commande | Effet |
-|:---------|:------|
-| `buddy` | Panneau de stats |
+|:--|:--|
+| `buddy` | Panneau de stats (8s) |
 | `buddy pet` | Caresser ♥ |
 | `buddy rename nom` | Renommer |
 
 ---
 
-## Désinstallation
+## 🧪 Utilisation autonome
 
 ```bash
-rm -rf ~/.codex/buddy && rm -f ~/.codex/hooks.json && rm -f /usr/local/bin/codex-buddy
+git clone https://github.com/FunseaAI/anycli-buddy.git && cd anycli-buddy
+
+node cli.js gallery        # voir les 18 espèces
+node cli.js hatch myname   # générer un compagnon
+node cli.js animate        # animation en direct
 ```
 
 ---
 
 <p align="center">
   <sub>MIT License · <a href="https://github.com/FunseaAI">FunseaAI</a></sub>
+</p>
+
+<p align="center">
+  <sub>Si votre buddy vous fait sourire, mettez une ⭐</sub>
 </p>
