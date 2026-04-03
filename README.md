@@ -37,30 +37,27 @@
 
 ## ⚡ One-command install
 
-<table>
-<tr>
-<td><b>Codex CLI</b></td>
-<td>
+### Codex CLI
 
 ```bash
+# Step 1: Install
 curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install.sh | bash
+
+# Step 2: Run (from any project directory)
+codex-buddy
 ```
 
-</td>
-</tr>
-<tr>
-<td><b>OpenCode</b></td>
-<td>
+### OpenCode
 
 ```bash
+# Step 1: Install
 curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install-opencode.sh | bash
+
+# Step 2: Run (from any project directory)
+opencode-buddy
 ```
 
-</td>
-</tr>
-</table>
-
-Then just run **`codex-buddy`** or **`opencode-buddy`** from any project directory.
+> First run shows a hatching animation — pick a name, see your companion's stats roll in. After that, your buddy appears automatically every time.
 
 <details>
 <summary>💬 Or tell your AI agent to install it</summary>
