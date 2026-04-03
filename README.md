@@ -4,6 +4,36 @@
 
 ---
 
+## 一键安装
+
+### Codex CLI
+
+Tell Codex:
+
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/anthropics/terminal-buddy/refs/heads/main/.codex/INSTALL.md
+```
+
+### Claude Code
+
+Tell Claude Code:
+
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/anthropics/terminal-buddy/refs/heads/main/.claude/INSTALL.md
+```
+
+### 手动安装（Shell）
+
+```bash
+# Codex CLI
+cd terminal-buddy/codex-plugin && bash install.sh
+
+# 独立体验
+cd terminal-buddy && node cli.js animate
+```
+
+---
+
 ## 项目结构
 
 ```
