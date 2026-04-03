@@ -9,173 +9,181 @@
 <h1 align="center">🐾 AnyCLI-Buddy</h1>
 
 <p align="center">
-  <strong>An animated ASCII companion for your terminal coding agent.</strong><br>
-  Works with <b>Codex CLI</b> · <b>OpenCode</b> · any terminal
+  <strong>A terminal pet that hatches from an egg and reacts to your code.</strong>
 </p>
 
 <p align="center">
-  <a href="#install">Install</a> ·
-  <a href="#features">Features</a> ·
-  <a href="#commands">Commands</a> ·
-  <a href="#standalone-usage">Standalone</a> ·
-  <a href="#api">API</a>
+  <img src="https://img.shields.io/badge/species-18-blue" alt="18 species">
+  <img src="https://img.shields.io/badge/rarity_tiers-5-purple" alt="5 rarity tiers">
+  <img src="https://img.shields.io/badge/zero-dependencies-green" alt="zero dependencies">
+  <img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen" alt="node >= 18">
+  <img src="https://img.shields.io/github/license/FunseaAI/anycli-buddy" alt="MIT License">
+  <img src="https://img.shields.io/github/stars/FunseaAI/anycli-buddy?style=social" alt="GitHub Stars">
 </p>
 
 <p align="center">
-  <img src="docs/demo.svg" alt="AnyCLI-Buddy Demo" width="600">
+  <img src="docs/demo.svg" alt="AnyCLI-Buddy Hatching Demo" width="600">
+</p>
+
+<p align="center">
+  <sub>▲ Your companion hatches with a unique species, rarity, and stats based on your coding style</sub>
 </p>
 
 ---
 
-Your buddy watches your coding session, reacts to errors, celebrates fixes, and keeps you company during long debug sessions.
+> **Your buddy watches your coding session.** It reacts when you squash bugs (*"bug squashed!"*), cheers when tests pass (*"all green!"*), and hides during merge conflicts (*"conflict! \*hides\*"*). When nothing's happening, it just sits there going *zzZ*.
 
-**18 species** · **5 rarity tiers** · **animated idle cycles** · **speech bubbles** · **hatching ceremony**
+<br>
 
-## Install
+## ⚡ One-command install
 
-### Codex CLI
+<table>
+<tr>
+<td><b>Codex CLI</b></td>
+<td>
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install.sh | bash
 ```
 
-Then start from any project directory:
-
-```bash
-codex-buddy
-```
-
-Or tell Codex directly:
-
-> Fetch and follow instructions from https://raw.githubusercontent.com/FunseaAI/anycli-buddy/refs/heads/main/.codex/INSTALL.md
-
-### OpenCode
+</td>
+</tr>
+<tr>
+<td><b>OpenCode</b></td>
+<td>
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install-opencode.sh | bash
 ```
 
-```bash
-opencode-buddy
-```
+</td>
+</tr>
+</table>
 
-Or tell OpenCode directly:
+Then just run **`codex-buddy`** or **`opencode-buddy`** from any project directory.
 
+<details>
+<summary>💬 Or tell your AI agent to install it</summary>
+<br>
+
+**Codex:**
+> Fetch and follow instructions from https://raw.githubusercontent.com/FunseaAI/anycli-buddy/refs/heads/main/.codex/INSTALL.md
+
+**OpenCode:**
 > Fetch and follow instructions from https://raw.githubusercontent.com/FunseaAI/anycli-buddy/refs/heads/main/.opencode/INSTALL.md
 
----
-
-## What it looks like
-
-```
-┌─────────────────────────────────────────────┐
-│  >_ Codex CLI                               │
-│                                             │
-│  > fix the auth bug                         │
-│  • Fixed null check in login.js             │
-│                                             │
-├─────────────────────────────────────────────┤
-│        .----.                               │
-│       / ✦  ✦ \   ── "bug squashed!"        │
-│       |      |                              │
-│       ~`~``~`~                              │
-│        Pixa ★                               │
-└─────────────────────────────────────────────┘
-```
-
-Buddy lives in a **tmux bottom pane** (6 rows). Animates in real-time, speaks in response to your coding context, stays out of the way.
+</details>
 
 ---
 
-## Features
+## 🖥️ What it looks like
+
+```
+┌─────────────────────────────────────────────────┐
+│  >_ Codex CLI                                   │
+│                                                 │
+│  > fix the auth bug                             │
+│  • Fixed null check in login.js                 │
+│                                                 │
+├─────────────────────────────────────────────────┤
+│       n______n                                  │
+│      ( ·    · )    ── "bug squashed!"           │
+│      (   oo   )                                 │
+│       `------´                                  │
+│       Cappie ★★★                                │
+└─────────────────────────────────────────────────┘
+```
+
+<sub>Buddy lives in a tmux bottom pane (6 rows). Animates in real-time, stays out of the way, zero impact on your agent.</sub>
+
+---
+
+## ✨ Features
 
 ### 🥚 Hatching ceremony
 
-First run plays an interactive animation:
+Your first run plays a full hatching sequence — egg wobble, cracks, burst, species reveal, **you name it**, then stats roll in one by one:
 
 ```
-    _*_           * . *         / ✦  ✦ \
-   / . \    →   . \ / .    →   |      |
-  |  / .|       --+--          ~`~``~`~
-  |. /  |       . / \ .
-   \*__/         * . *       Give your ghost a name: _
+    _*_            * . *           n______n
+   / . \    →    . \ / .    →    ( ·    · )
+  |  / .|        --+--           (   oo   )
+  |. /  |        . / \ .          `------´
+   \*__/          * . *
+                                Give your capybara a name: _
 ```
 
-Egg wobble → cracks → burst → **species reveal** → **you name it** → stats roll in one by one with suspense animation.
-
-Your companion's stats are shaped by your actual coding style — analyzed from git history, shell usage, and project structure.
+Stats are shaped by **your actual git history** — late-night coder? High CHAOS. Clean commit messages? High PATIENCE.
 
 ### 🐾 18 species
 
-| | | | | | |
-|---|---|---|---|---|---|
-| duck | goose | blob | cat | dragon | octopus |
-| owl | penguin | turtle | snail | ghost | axolotl |
-| capybara | cactus | robot | rabbit | mushroom | chonk |
+<table>
+<tr><td>🦆 duck</td><td>🪿 goose</td><td>🫧 blob</td><td>🐱 cat</td><td>🐉 dragon</td><td>🐙 octopus</td></tr>
+<tr><td>🦉 owl</td><td>🐧 penguin</td><td>🐢 turtle</td><td>🐌 snail</td><td>👻 ghost</td><td>🦎 axolotl</td></tr>
+<tr><td>🦫 capybara</td><td>🌵 cactus</td><td>🤖 robot</td><td>🐰 rabbit</td><td>🍄 mushroom</td><td>😺 chonk</td></tr>
+</table>
 
-Each with **3 animation frames**, unique face, and species-specific fidget patterns.
+Each with **3 animation frames**, unique ASCII face, and species-specific idle fidgets.
 
-### ✨ Rarity system
+### 🎲 Rarity & hats
 
-| Rarity | Chance | Stars | Hat |
-|--------|--------|-------|-----|
-| common | 60% | ★ | none |
-| uncommon | 25% | ★★ | random |
-| rare | 10% | ★★★ | random |
-| epic | 4% | ★★★★ | random |
-| legendary | 1% | ★★★★★ | random |
+| | Chance | Stars | Hats |
+|:--|:--|:--|:--|
+| **common** | 60% | ★ | — |
+| **uncommon** | 25% | ★★ | crown, tophat, propeller... |
+| **rare** | 10% | ★★★ | 〃 |
+| **epic** | 4% | ★★★★ | 〃 |
+| **legendary** | 1% | ★★★★★ | 〃 |
 
-### 📊 5 stats shaped by your coding style
+### 📊 5 stats from your coding DNA
 
 | Stat | What boosts it |
-|------|----------------|
-| **DEBUGGING** | Fix/debug commits in git history |
+|:--|:--|
+| **DEBUGGING** | Fix/debug commits in your git log |
 | **PATIENCE** | Detailed commit messages, many small commits |
-| **CHAOS** | Reverts, force pushes, late-night coding |
-| **WISDOM** | Refactoring commits, test runner usage |
-| **SNARK** | Vim user, prolific coder |
+| **CHAOS** | Reverts, force pushes, commits after midnight |
+| **WISDOM** | Refactoring commits, test runner in shell history |
+| **SNARK** | Vim user, prolific committer |
 
-Stats influence reactions. High SNARK → *"ez"*, *"ship it!"*. High PATIENCE → *"I believe in you"*.
+Your buddy's personality comes from these stats. High SNARK? It says *"ez"* and *"ship it!"*. High PATIENCE? *"I believe in you"*.
 
 ### 💬 Context-aware reactions
 
-Buddy reads actual conversation content:
+Buddy reads the **actual output** of each coding turn:
 
 | What happened | Buddy says |
-|:---|:---|
+|:--|:--|
 | Fixed a bug | *"bug squashed!"* |
 | Tests pass | *"all green!"* |
 | Tests fail | *"test caught something"* |
 | Build succeeds | *"it builds!"* |
-| TypeError | *"syntax demons!"* |
-| Git push | *"shipped!"* |
-| Deploy | *"fingers crossed"* |
+| `TypeError` in output | *"syntax demons!"* |
+| `git push` | *"shipped!"* |
+| Deploy to production | *"fingers crossed"* |
 | Merge conflict | *"conflict! \*hides\*"* |
 | Nothing happening | *zzZ* |
 
-**47 content rules** + **9 prompt rules** + stat-weighted fallback quips.
-
-Buddy speaks on **turn completion** only — silent during tool execution (zero agent impact).
+47 content patterns + 9 prompt patterns + stat-weighted fallback quips. Speaks only on **turn completion** — silent while the agent works.
 
 ---
 
-## Commands
+## 🎮 Commands
 
-Type in your CLI agent's prompt:
+Type in your agent's prompt (not slash commands — these go through hooks):
 
 | Command | Effect |
-|:--------|:-------|
+|:--|:--|
 | `buddy` | Show stats panel (8s) |
 | `buddy stats` | Same |
 | `buddy pet` | Purr~ ♥ |
 | `pet` | Same |
-| `buddy rename Sparky` | Rename companion |
+| `buddy rename Sparky` | Rename your companion |
 
 ---
 
-## Standalone usage
+## 🧪 Try it standalone
 
-Works without any CLI agent:
+No CLI agent needed:
 
 ```bash
 git clone https://github.com/FunseaAI/anycli-buddy.git && cd anycli-buddy
@@ -188,57 +196,55 @@ node demo.js               # interactive demo
 
 ---
 
-## Architecture
+<details>
+<summary>🏗️ Architecture</summary>
 
 ```
 codex-buddy / opencode-buddy
   │
   ├── First run? → hatch-flow.js
-  │                 ├── Analyze git/shell history (user-profile.js)
-  │                 ├── Play hatching animation
-  │                 ├── User names companion
-  │                 └── Save to companion.json
-  │
-  ├── prompt-inject.js → writes companion intro to instructions.md
+  │     ├── Analyze git/shell history (user-profile.js)
+  │     ├── Play hatching animation
+  │     ├── User names companion → companion.json
+  │     └── Inject companion intro → instructions.md
   │
   └── tmux split
-       ├── Top pane: codex / opencode (your working directory)
-       └── Bottom pane (6 rows): buddy-panel.js
-            ├── Animated sprite (500ms tick, idle/fidget/blink)
-            ├── Speech bubbles (10s display, 3s fade)
-            └── Unix socket ← buddy-hook.sh ← CLI event hooks
+       ├── Top: codex / opencode (your working directory)
+       └── Bottom (6 rows): buddy-panel.js
+            ├── Animated sprite (500ms tick)
+            ├── Speech bubbles (10s, 3s fade)
+            └── Unix socket ← buddy-hook.sh ← hooks
 ```
 
-**Hook pipeline** — zero impact on your agent:
-
+**Zero agent impact:**
 ```
-CLI event → buddy-hook.sh (5 lines bash, background) → exit 0
-                  ↓ Unix socket
-            buddy-panel.js → context-reactor.js → reaction
+hook event → buddy-hook.sh (5 lines, background nc) → exit 0
+                   ↓ Unix socket
+             buddy-panel.js → context-reactor.js → reaction
 ```
 
 No Node.js fork per event. No API calls. No blocking.
 
----
+</details>
 
-## API
-
-Use the core library in your own projects:
+<details>
+<summary>📦 API — use in your own project</summary>
 
 ```js
-import { hatch, BuddyRenderer, pickQuip, renderFrame } from 'anycli-buddy';
+import { hatch, BuddyRenderer, pickQuip } from 'anycli-buddy';
 
-const buddy = hatch('seed', 'Sparky');        // generate companion
+const buddy = hatch('seed', 'Sparky');
 const renderer = new BuddyRenderer(buddy);
-renderer.start((lines) => { /* render */ });   // 500ms animation loop
-renderer.say('hello!');                        // speech bubble (10s)
-renderer.pet();                                // heart animation (2.5s)
+renderer.start((lines) => { /* render */ });
+renderer.say('hello!');   // speech bubble (10s)
+renderer.pet();           // heart animation (2.5s)
 renderer.stop();
 ```
 
----
+</details>
 
-## Uninstall
+<details>
+<summary>🗑️ Uninstall</summary>
 
 ```bash
 # Codex
@@ -248,8 +254,14 @@ rm -rf ~/.codex/buddy && rm -f ~/.codex/hooks.json && rm -f /usr/local/bin/codex
 rm -rf ~/.config/opencode/buddy && rm -f /usr/local/bin/opencode-buddy
 ```
 
+</details>
+
 ---
 
 <p align="center">
-  <sub>MIT License · Made by <a href="https://github.com/FunseaAI">FunseaAI</a></sub>
+  <sub>MIT License · Made with ♥ by <a href="https://github.com/FunseaAI">FunseaAI</a></sub>
+</p>
+
+<p align="center">
+  <sub>If your buddy brings you joy, consider giving this repo a ⭐</sub>
 </p>
