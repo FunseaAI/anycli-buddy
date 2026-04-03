@@ -1,14 +1,4 @@
-<p align="center">
-  <pre align="center">
-   .----.
-  / ✦  ✦ \   ── "bug squashed!"
-  |      |
-  ~`~``~`~
-   Pixa ★
-  </pre>
-</p>
-
-<h1 align="center">anycli-buddy</h1>
+<h1 align="center">🐾 anycli-buddy</h1>
 
 <p align="center">
   <strong>An animated ASCII companion for your terminal coding agent.</strong><br>
@@ -22,6 +12,14 @@
   <a href="#standalone-usage">Standalone</a> ·
   <a href="#api">API</a>
 </p>
+
+```
+      .----.
+     / ✦  ✦ \    ── "bug squashed!"
+     |      |
+     ~`~``~`~
+      Pixa ★
+```
 
 ---
 
