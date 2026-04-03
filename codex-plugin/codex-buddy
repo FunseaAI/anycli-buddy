@@ -1,32 +1,37 @@
 #!/usr/bin/env bash
-# codex-buddy: 启动 Codex CLI + buddy 伴侣（tmux 分屏）
+# codex-buddy: 启动 Codex CLI + buddy 伴侣（tmux 上下分栏）
 # 用法: codex-buddy [codex 参数...]
 
 BUDDY_HOME="$HOME/.codex/buddy"
 SESSION="codex-buddy"
 
-# 检查 tmux
 command -v tmux >/dev/null 2>&1 || { echo "需要 tmux: brew install tmux"; exit 1; }
 command -v node >/dev/null 2>&1 || { echo "需要 Node.js >= 18"; exit 1; }
 
-# 如果已经在 tmux 里，直接用当前 session
+# ── 首次孵化：在进 tmux 之前完成（当前终端有键盘输入）──────────
+if [ ! -f "$BUDDY_HOME/companion.json" ]; then
+    node "$BUDDY_HOME/hatch-flow.js"
+    clear
+fi
+
+# ── 注入系统提示词到 instructions.md ────────────────────────────
+node "$BUDDY_HOME/prompt-inject.js" 2>/dev/null
+
+# 如果已经在 tmux 里
 if [ -n "$TMUX" ]; then
-    # 右侧开 buddy 面板
-    tmux split-window -h -l 20 "cd $BUDDY_HOME && node buddy-panel.js"
-    # 左侧面板运行 codex
+    tmux split-window -v -l 6 "cd $BUDDY_HOME && node buddy-panel.js"
     codex "$@"
-    # codex 退出后关掉 buddy 面板
-    tmux kill-pane -t right 2>/dev/null
+    tmux kill-pane -t bottom 2>/dev/null
     exit 0
 fi
 
-# 不在 tmux 里，创建新 session
+# 新建 tmux session
 tmux kill-session -t "$SESSION" 2>/dev/null
 
-# 构建 codex 命令（传递所有参数）
 CODEX_CMD="codex $*; tmux kill-session -t $SESSION"
 
 tmux new-session -d -s "$SESSION" -x "$(tput cols)" -y "$(tput lines)" "$CODEX_CMD"
-tmux split-window -h -t "$SESSION" -l 20 "cd $BUDDY_HOME && node buddy-panel.js"
-tmux select-pane -t "$SESSION:0.0"  # 焦点回到 codex
+tmux split-window -v -t "$SESSION" -l 6 "cd $BUDDY_HOME && node buddy-panel.js"
+tmux set-hook -t "$SESSION" after-resize-pane "resize-pane -t '$SESSION:0.1' -y 6"
+tmux select-pane -t "$SESSION:0.0"
 tmux attach -t "$SESSION"

@@ -1,5 +1,4 @@
-// Hatching animation with naming flow.
-// egg → crack → burst → reveal species → ask name → show stats
+// Hatching animation — centered, stats reveal one-by-one with suspense.
 
 import { createInterface } from 'readline';
 import { dirname, join } from 'path';
@@ -12,160 +11,205 @@ const { RARITY_COLORS, RARITY_STARS, RESET, BOLD, DIM, ITALIC } = await import(j
 const ESC = '\x1b[';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-function center(text, cols) {
+function cols() { return process.stdout.columns || 80; }
+function rows() { return process.stdout.rows || 24; }
+
+function centerH(text) {
   const stripped = text.replace(/\x1b\[[0-9;]*m/g, '');
-  const pad = Math.max(0, Math.floor((cols - [...stripped].length) / 2));
+  const pad = Math.max(0, Math.floor((cols() - [...stripped].length) / 2));
   return ' '.repeat(pad) + text;
 }
 
-function clearScreen() {
-  process.stdout.write(`${ESC}2J${ESC}1;1H`);
+function clear() { process.stdout.write(`${ESC}2J${ESC}1;1H`); }
+
+function drawCentered(lines) {
+  clear();
+  const startRow = Math.max(1, Math.floor((rows() - lines.length) / 2));
+  for (let i = 0; i < lines.length; i++) {
+    process.stdout.write(`${ESC}${startRow + i};1H${ESC}2K`);
+    process.stdout.write(centerH(lines[i]));
+  }
+  return startRow;
 }
 
-/**
- * Ask the user for a name via stdin.
- * @param {string} species
- * @param {string} defaultName
- * @returns {Promise<string>}
- */
-function askName(species, defaultName, cols) {
+// Write a single line at absolute position
+function writeLine(row, text) {
+  process.stdout.write(`${ESC}${row};1H${ESC}2K`);
+  process.stdout.write(centerH(text));
+}
+
+function askName(species, defaultName) {
   return new Promise(resolve => {
-    process.stdout.write(`${ESC}?25h`); // show cursor for input
+    process.stdout.write(`${ESC}?25h`);
     const rl = createInterface({ input: process.stdin, output: process.stdout });
-
-    const prompt = `  Give your ${species} a name (Enter for "${defaultName}"): `;
-    const row = 10;
-    process.stdout.write(`${ESC}${row};1H${ESC}2K`);
-    // Center the prompt area
-    const lp = Math.max(0, Math.floor((cols - prompt.length - 10) / 2));
-    process.stdout.write(' '.repeat(lp));
-
+    const prompt = `Give your ${species} a name (Enter for "${defaultName}"): `;
+    const row = Math.floor(rows() / 2) + 6;
+    const lp = Math.max(0, Math.floor((cols() - prompt.length - 10) / 2));
+    process.stdout.write(`${ESC}${row};1H${ESC}2K${' '.repeat(lp)}`);
     rl.question(prompt, (answer) => {
       rl.close();
-      process.stdout.write(`${ESC}?25l`); // hide cursor again
-      const name = answer.trim() || defaultName;
-      resolve(name);
+      process.stdout.write(`${ESC}?25l`);
+      resolve(answer.trim() || defaultName);
     });
   });
 }
 
-/**
- * Play the full hatching sequence.
- * @param {object} bones - companion bones (no name yet)
- * @param {string} defaultName - fallback name
- * @returns {Promise<string>} chosen name
- */
-export async function playHatchAnimation(bones, defaultName) {
-  const cols = process.stdout.columns || 80;
+// Stat bar with rolling animation
+function statBar(val, width = 15) {
+  const filled = Math.round((val / 100) * width);
+  return '\u2588'.repeat(filled) + '\u2591'.repeat(width - filled);
+}
+
+// Rarity label with flair
+function rarityLabel(rarity) {
+  const labels = {
+    common:    `${DIM}common${RESET}`,
+    uncommon:  `\x1b[32muncommon${RESET}`,
+    rare:      `\x1b[36m\x1b[1mrare${RESET}`,
+    epic:      `\x1b[35m\x1b[1m✦ epic ✦${RESET}`,
+    legendary: `\x1b[33m\x1b[1m★ LEGENDARY ★${RESET}`,
+  };
+  return labels[rarity] || rarity;
+}
+
+export async function playHatchAnimation(bones, defaultName, profile = null) {
   const color = RARITY_COLORS[bones.rarity] || '';
   const stars = RARITY_STARS[bones.rarity] || '';
 
-  process.stdout.write(`${ESC}?25l`); // hide cursor
-  clearScreen();
+  process.stdout.write(`${ESC}?25l`);
 
-  // ── Phase 1: Egg ─────────────────────────────────────────────
-  const egg = [
-    '    ___    ',
-    '   /   \\   ',
-    '  |     |  ',
-    '  |     |  ',
-    '   \\___/   ',
+  // ── Phase 1: Egg wobble ──────────────────────────────────────
+  const eggFrames = [
+    ['    ___    ', '   /   \\   ', '  |     |  ', '  |     |  ', '   \\___/   '],
+    ['    ___    ', '   /   \\   ', '  |     |  ', '  |     |  ', '    \\___/  '],
+    ['    ___    ', '   /   \\   ', '  |     |  ', '  |     |  ', '   \\___/   '],
+    ['   ___     ', '  /   \\    ', '  |     |  ', '  |     |  ', '   \\___/   '],
   ];
-  for (let i = 0; i < egg.length; i++) {
-    process.stdout.write(`${ESC}${i + 2};1H${ESC}2K`);
-    process.stdout.write(center(`${DIM}${egg[i]}${RESET}`, cols));
+  for (const frame of eggFrames) {
+    drawCentered([...frame.map(l => `${DIM}${l}${RESET}`), '', `${DIM}A mysterious egg appears...${RESET}`]);
+    await sleep(400);
   }
-  process.stdout.write(`${ESC}${8};1H${ESC}2K`);
-  process.stdout.write(center(`${DIM}A mysterious egg appears...${RESET}`, cols));
-  await sleep(1500);
+  await sleep(600);
 
-  // ── Phase 2: Cracking ────────────────────────────────────────
+  // ── Phase 2: Cracking (3 stages) ─────────────────────────────
   const cracks = [
     ['    ___    ', '   /   \\   ', '  | .   |  ', '  |     |  ', '   \\___/   '],
     ['    ___    ', '   / . \\   ', '  |  /  |  ', '  | .   |  ', '   \\___/   '],
     ['    _*_    ', '   / . \\   ', '  |  / .|  ', '  |. /  |  ', '   \\*__/   '],
   ];
-  for (const frame of cracks) {
-    for (let i = 0; i < frame.length; i++) {
-      process.stdout.write(`${ESC}${i + 2};1H${ESC}2K`);
-      process.stdout.write(center(frame[i], cols));
-    }
-    process.stdout.write(`${ESC}${8};1H${ESC}2K`);
-    process.stdout.write(center(`${ITALIC}*crack*${RESET}`, cols));
-    await sleep(800);
+  for (let c = 0; c < cracks.length; c++) {
+    const dots = '.'.repeat(c + 1);
+    drawCentered([...cracks[c], '', `${ITALIC}*crack${dots}*${RESET}`]);
+    await sleep(700);
   }
 
   // ── Phase 3: Burst ───────────────────────────────────────────
-  const burst = [
-    '    * . *    ',
-    '  .  \\ /  .  ',
-    '    --+--    ',
-    '  .  / \\  .  ',
-    '    * . *    ',
-  ];
-  for (let i = 0; i < burst.length; i++) {
-    process.stdout.write(`${ESC}${i + 2};1H${ESC}2K`);
-    process.stdout.write(center(`${color}${BOLD}${burst[i]}${RESET}`, cols));
-  }
-  process.stdout.write(`${ESC}${8};1H${ESC}2K`);
-  process.stdout.write(center(`${color}${BOLD}!! HATCH !!${RESET}`, cols));
-  await sleep(1000);
+  drawCentered([
+    `${color}${BOLD}    * . *    ${RESET}`,
+    `${color}${BOLD}  .  \\ /  .  ${RESET}`,
+    `${color}${BOLD}    --+--    ${RESET}`,
+    `${color}${BOLD}  .  / \\  .  ${RESET}`,
+    `${color}${BOLD}    * . *    ${RESET}`,
+    '',
+    `${color}${BOLD}!! HATCH !!${RESET}`,
+  ]);
+  await sleep(1200);
 
-  // ── Phase 4: Reveal species ──────────────────────────────────
-  clearScreen();
+  // ── Phase 4: Reveal species + rarity ─────────────────────────
   const sprite = renderSprite(bones, 0);
-  for (let i = 0; i < sprite.length; i++) {
-    process.stdout.write(`${ESC}${i + 2};1H${ESC}2K`);
-    process.stdout.write(center(`${color}${sprite[i]}${RESET}`, cols));
-  }
-  const infoRow = sprite.length + 3;
-  process.stdout.write(`${ESC}${infoRow};1H${ESC}2K`);
-  process.stdout.write(center(
-    `${color}${stars}${RESET}  ${DIM}${bones.rarity} ${bones.species}${RESET}  ${color}${stars}${RESET}`,
-    cols
-  ));
-  if (bones.shiny) {
-    process.stdout.write(`${ESC}${infoRow + 1};1H${ESC}2K`);
-    process.stdout.write(center(`${BOLD}\u2728 SHINY \u2728${RESET}`, cols));
-  }
-  await sleep(1500);
+  const revealLines = [
+    ...sprite.map(l => `${color}${l}${RESET}`),
+    '',
+    `${rarityLabel(bones.rarity)}  ${color}${bones.species}${RESET}`,
+    `${color}${stars}${RESET}`,
+    ...(bones.shiny ? ['', `${BOLD}\x1b[33m\u2728 SHINY \u2728${RESET}`] : []),
+  ];
+  drawCentered(revealLines);
+  await sleep(2000);
 
   // ── Phase 5: Ask for name ────────────────────────────────────
-  const name = await askName(bones.species, defaultName, cols);
+  const name = await askName(bones.species, defaultName);
 
-  // ── Phase 6: Show final card with name ───────────────────────
-  clearScreen();
-  for (let i = 0; i < sprite.length; i++) {
-    process.stdout.write(`${ESC}${i + 2};1H${ESC}2K`);
-    process.stdout.write(center(`${color}${sprite[i]}${RESET}`, cols));
-  }
-  const nameRow = sprite.length + 3;
-  process.stdout.write(`${ESC}${nameRow};1H${ESC}2K`);
-  process.stdout.write(center(`${color}${BOLD}${name}${RESET} ${color}${stars}${RESET}`, cols));
-  process.stdout.write(`${ESC}${nameRow + 1};1H${ESC}2K`);
-  process.stdout.write(center(`${DIM}${bones.rarity} ${bones.species}${RESET}`, cols));
+  // ── Phase 6: Stats reveal one-by-one ─────────────────────────
+  const statEntries = Object.entries(bones.stats);
 
-  // Stats
-  const statsRow = nameRow + 3;
-  process.stdout.write(`${ESC}${statsRow};1H${ESC}2K`);
-  process.stdout.write(center(`${DIM}── Stats ──${RESET}`, cols));
+  // Build the full card layout (but stats start as hidden)
+  const cardBase = [
+    ...sprite.map(l => `${color}${l}${RESET}`),
+    '',
+    `${color}${BOLD}${name}${RESET} ${color}${stars}${RESET}`,
+    `${DIM}${bones.rarity} ${bones.species}${RESET}`,
+    '',
+    `${DIM}\u2500\u2500 Stats \u2500\u2500${RESET}`,
+  ];
 
-  const statNames = Object.keys(bones.stats);
-  for (let i = 0; i < statNames.length; i++) {
-    const sn = statNames[i];
-    const val = bones.stats[sn];
-    const filled = Math.round((val / 100) * 15);
-    const bar = '\u2588'.repeat(filled) + '\u2591'.repeat(15 - filled);
-    process.stdout.write(`${ESC}${statsRow + 1 + i};1H${ESC}2K`);
-    process.stdout.write(center(`${color}${sn.padEnd(10)} ${bar} ${val}${RESET}`, cols));
-    await sleep(300);
+  // Draw base card first
+  const startRow = drawCentered([
+    ...cardBase,
+    ...statEntries.map(() => `${DIM}  ..........  loading${RESET}`),
+  ]);
+
+  // Reveal each stat with rolling effect
+  const statsStartRow = startRow + cardBase.length;
+  for (let i = 0; i < statEntries.length; i++) {
+    const [stat, val] = statEntries[i];
+
+    // Rolling number animation (3 quick random values then real)
+    for (let r = 0; r < 3; r++) {
+      const fakeVal = Math.floor(Math.random() * 100);
+      writeLine(statsStartRow + i, `${color}${stat.padEnd(10)} ${statBar(fakeVal)} ${DIM}${String(fakeVal).padStart(3)}${RESET}`);
+      await sleep(100);
+    }
+
+    // Final real value
+    writeLine(statsStartRow + i, `${color}${stat.padEnd(10)} ${statBar(val)} ${BOLD}${String(val).padStart(3)}${RESET}`);
+    await sleep(400);
   }
 
   await sleep(1000);
-  const msgRow = statsRow + statNames.length + 2;
-  process.stdout.write(`${ESC}${msgRow};1H${ESC}2K`);
-  process.stdout.write(center(`${BOLD}${name} is ready to code with you!${RESET}`, cols));
-  await sleep(2000);
+
+  // ── Phase 6.5: Profile insights ──────────────────────────────
+  if (profile) {
+    const insights = [];
+    if (profile.topLang) insights.push(`Raised on ${BOLD}${profile.topLang}${RESET}${DIM} (detected in your project)`);
+    if (profile.debugFrequency > 5) insights.push(`${BOLD}Bug hunter${RESET}${DIM} — ${profile.debugFrequency} fix/debug commits found`);
+    if (profile.refactorFrequency > 3) insights.push(`${BOLD}Clean coder${RESET}${DIM} — ${profile.refactorFrequency} refactor commits found`);
+    if (profile.chaosLevel > 3) insights.push(`${BOLD}Chaos energy${RESET}${DIM} — ${profile.chaosLevel} reverts/yolo commits detected`);
+    if (profile.lateNightCoder) insights.push(`${BOLD}Night owl${RESET}${DIM} — 30%+ commits after midnight`);
+    if (profile.prolificCoder) insights.push(`${BOLD}Prolific${RESET}${DIM} — ${profile.commitCount} commits in this repo`);
+    if (profile.testRunner) insights.push(`${BOLD}Tested${RESET}${DIM} — test runner detected in shell history`);
+    if (profile.vimUser) insights.push(`${BOLD}Vim user${RESET}${DIM} — respect`);
+
+    if (insights.length > 0) {
+      const insightLines = [
+        '',
+        `${DIM}\u2500\u2500 Personality shaped by your coding style \u2500\u2500${RESET}`,
+        '',
+        ...insights.map(i => `${DIM}  \u2022 ${i}${RESET}`),
+      ];
+
+      for (const line of insightLines) {
+        const row = startRow + cardBase.length + statEntries.length + insightLines.indexOf(line);
+        writeLine(row, line);
+        await sleep(300);
+      }
+      await sleep(1500);
+    }
+  }
+
+  // ── Phase 7: Final message ───────────────────────────────────
+  drawCentered([
+    ...sprite.map(l => `${color}${l}${RESET}`),
+    '',
+    `${color}${BOLD}${name}${RESET} ${color}${stars}${RESET}`,
+    '',
+    ...statEntries.map(([stat, val]) =>
+      `${color}${stat.padEnd(10)} ${statBar(val)} ${BOLD}${String(val).padStart(3)}${RESET}`
+    ),
+    '',
+    `${BOLD}${name} is ready to code with you!${RESET}`,
+  ]);
+  await sleep(2500);
 
   process.stdout.write(`${ESC}?25h`);
   return name;
