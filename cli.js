@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// CLI entry point for terminal-buddy
+// CLI entry point for anycli-buddy
 // Usage:
-//   terminal-buddy hatch [seed] [name]  — generate a companion
-//   terminal-buddy show [seed]          — show static sprite
-//   terminal-buddy card [seed]          — show full stats card
-//   terminal-buddy gallery              — show all 18 species
-//   terminal-buddy animate [seed]       — live animation (same as demo)
-//   terminal-buddy face [seed]          — one-line face only
+//   anycli-buddy hatch [seed] [name]  — generate a companion
+//   anycli-buddy show [seed]          — show static sprite
+//   anycli-buddy card [seed]          — show full stats card
+//   anycli-buddy gallery              — show all 18 species
+//   anycli-buddy animate [seed]       — live animation (same as demo)
+//   anycli-buddy face [seed]          — one-line face only
 
 import { hatch, roll } from './companion.js';
 import { BuddyRenderer, renderOneLiner, renderFrame } from './renderer.js';
@@ -22,7 +22,7 @@ function getSeed() {
 
 function printHelp() {
   console.log(`
-${BOLD}terminal-buddy${RESET} — standalone terminal companion
+${BOLD}anycli-buddy${RESET} — standalone terminal companion
 
 ${BOLD}Commands:${RESET}
   hatch [seed] [name]   Generate and display a companion
@@ -34,9 +34,9 @@ ${BOLD}Commands:${RESET}
   oneliner [seed]       Compact one-liner for status bars
 
 ${BOLD}Examples:${RESET}
-  terminal-buddy hatch my-username Sparky
-  terminal-buddy animate
-  terminal-buddy gallery
+  anycli-buddy hatch my-username Sparky
+  anycli-buddy animate
+  anycli-buddy gallery
 
 ${DIM}Seed defaults to $USER. Same seed always produces the same companion.${RESET}
 `);

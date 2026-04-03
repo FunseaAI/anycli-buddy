@@ -12,7 +12,7 @@ const seed = process.argv[2] || `demo-${Date.now()}`;
 const companion = hatch(seed);
 
 console.log('');
-console.log(`${BOLD}terminal-buddy demo${RESET}  ${DIM}(seed: ${seed})${RESET}`);
+console.log(`${BOLD}anycli-buddy demo${RESET}  ${DIM}(seed: ${seed})${RESET}`);
 console.log(`${DIM}Commands: say <text> | pet | info | gallery | quit${RESET}`);
 console.log('');
 

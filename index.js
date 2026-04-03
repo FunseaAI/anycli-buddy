@@ -1,5 +1,5 @@
-// terminal-buddy — standalone terminal companion system
-// No dependencies on React, Ink, or Claude Code internals.
+// anycli-buddy — standalone terminal companion system
+// Zero dependencies — pure Node.js.
 
 export { SPECIES, RARITIES, EYES, HATS, STAT_NAMES, RARITY_COLORS, RARITY_STARS } from './types.js';
 export { renderSprite, spriteFrameCount, renderFace } from './sprites.js';

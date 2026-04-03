@@ -1,4 +1,4 @@
-// Species, rarities, eyes, hats, stats — extracted from Claude Code buddy system
+// Species, rarities, eyes, hats, stats — companion system for terminal coding agents
 
 export const RARITIES = ['common', 'uncommon', 'rare', 'epic', 'legendary'];
 
