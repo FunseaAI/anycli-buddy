@@ -1,10 +1,20 @@
 # terminal-buddy
 
-从 Claude Code 2.1 源码中提取并重构的终端宠物伴侣系统。可以独立运行，也可以作为插件集成到 Codex CLI、OpenCode 等 CLI Agent 中。
+An animated ASCII companion for your terminal coding agent. Extracted from Claude Code's buddy system and rebuilt to work with **Codex CLI**, **OpenCode**, **Claude Code**, or any terminal.
+
+```
+   .----.
+  / ✦  ✦ \   ── "bug squashed!"
+  |      |
+  ~`~``~`~
+   Pixa ★
+```
+
+Your buddy watches your coding session, reacts to errors, celebrates fixes, and keeps you company during long debug sessions. 18 species, 5 rarity tiers, animated idle cycles, speech bubbles, and a hatching ceremony when you first meet.
 
 ---
 
-## 一键安装
+## Install
 
 ### Codex CLI
 
@@ -30,247 +40,238 @@ Tell Claude Code:
 Fetch and follow instructions from https://raw.githubusercontent.com/anthropics/terminal-buddy/refs/heads/main/.claude/INSTALL.md
 ```
 
-### 手动安装（Shell）
+### Manual (shell)
 
 ```bash
-# Codex CLI
+git clone https://github.com/anthropics/terminal-buddy.git
 cd terminal-buddy/codex-plugin && bash install.sh
-
-# 独立体验
-cd terminal-buddy && node cli.js animate
 ```
 
 ---
 
-## 项目结构
+## What it looks like
 
 ```
-terminal-buddy/
-├── terminal-buddy/          # 核心包（零依赖，纯 Node.js）
-│   ├── sprites.js           # 18 种宠物 × 3 帧 ASCII 动画
-│   ├── companion.js         # 种子生成器（相同种子 = 相同宠物）
-│   ├── renderer.js          # BuddyRenderer 动画引擎
-│   ├── types.js             # 种类/稀有度/眼睛/帽子/颜色常量
-│   ├── quips.js             # 基于属性加权的台词系统
-│   ├── terminal.js          # ANSI 光标定位工具
-│   ├── bridge.js            # JSON-over-stdio 跨语言桥接
-│   ├── cli.js               # 命令行工具
-│   ├── demo.js              # 交互式演示
-│   └── index.js             # 公共 API 导出
-│
-├── codex-plugin/            # Codex CLI 插件（推荐方式）
-│   ├── install.sh           # 一键安装脚本
-│   ├── codex-buddy          # 启动器（tmux 分屏）
-│   ├── buddy-panel.js       # 面板渲染（动画 + 事件响应）
-│   ├── buddy-hook.sh        # Codex hooks 脚本
-│   └── hooks.json           # Codex hooks 配置
-│
-├── terminal-buddy-ink/      # React/Ink 组件（用于 Ink 系 TUI）
-│   └── src/
-│       ├── CompanionSprite.tsx
-│       ├── SpeechBubble.tsx
-│       ├── useAnimation.ts
-│       └── useBubbleTimer.ts
-│
-└── terminal-buddy-opencode/ # Go/Bubble Tea 集成
-    ├── bridge.go            # 子进程管理
-    ├── buddy.go             # Bubble Tea Model
-    ├── events.go            # 事件映射
-    └── overlay.go           # lipgloss 定位
+┌─────────────────────────────────────────────┐
+│  >_ Codex CLI                               │
+│                                             │
+│  > fix the auth bug                         │
+│  • Fixed null check in login.js             │
+│                                             │
+├─────────────────────────────────────────────┤
+│        .----.                               │
+│       / ✦  ✦ \   ── "bug squashed!"        │
+│       |      |                              │
+│       ~`~``~`~                              │
+│        Pixa ★                               │
+└─────────────────────────────────────────────┘
 ```
+
+The buddy lives in a tmux bottom pane. It animates in real-time (idle fidget, blink), speaks in response to your coding context, and stays out of the way.
 
 ---
 
-## 宠物系统
+## Features
 
-### 18 种宠物
+### Hatching ceremony
+
+First run plays an interactive hatching animation:
+
+```
+    _*_           * . *         / ✦  ✦ \
+   / . \    →   . \ / .    →   |      |
+  |  / .|       --+--          ~`~``~`~
+  |. /  |       . / \ .
+   \*__/         * . *       Give your ghost a name: _
+```
+
+Egg wobble → cracks → burst → species reveal → you name it → stats roll in one by one.
+
+### 18 species
 
 duck, goose, blob, cat, dragon, octopus, owl, penguin, turtle, snail, ghost, axolotl, capybara, cactus, robot, rabbit, mushroom, chonk
 
-### 5 种稀有度
+Each with 3 animation frames, unique face, and species-specific fidget patterns.
 
-| 稀有度 | 概率 | 颜色 | 星级 |
-|--------|------|------|------|
-| common | 60% | 灰色 | ★ |
-| uncommon | 25% | 绿色 | ★★ |
-| rare | 10% | 青色 | ★★★ |
-| epic | 4% | 品红 | ★★★★ |
-| legendary | 1% | 金色 | ★★★★★ |
+### Rarity system
 
-### 属性系统
+| Rarity | Chance | Stars |
+|--------|--------|-------|
+| common | 60% | ★ |
+| uncommon | 25% | ★★ |
+| rare | 10% | ★★★ |
+| epic | 4% | ★★★★ |
+| legendary | 1% | ★★★★★ |
 
-每只宠物有 5 项属性（DEBUGGING / PATIENCE / CHAOS / WISDOM / SNARK），影响台词选择的权重。
+Higher rarity = higher stat floors, hats unlocked, stronger personality.
 
-### 确定性生成
+### 5 stats shaped by your coding style
 
-相同的种子（用户 ID）永远生成同一只宠物：
-```js
-import { hatch } from './companion.js';
-const buddy = hatch('your-username');
-// 永远是同一只 → 例如 Pixa (common ghost, ✦ 眼睛)
-```
+| Stat | Influenced by |
+|------|---------------|
+| DEBUGGING | Fix/debug commits in your git history |
+| PATIENCE | Detailed commit messages, many small commits |
+| CHAOS | Reverts, force pushes, late-night coding |
+| WISDOM | Refactoring commits, test runner usage |
+| SNARK | Vim user, prolific coder |
+
+Stats influence which reactions your buddy picks. High SNARK buddies say "ez" and "ship it!". High PATIENCE ones say "I believe in you".
+
+### Context-aware reactions
+
+Your buddy reads the actual conversation content and responds to what's happening:
+
+| What happened | Buddy says |
+|---------------|-----------|
+| Fixed a bug | "bug squashed!" |
+| Tests pass | "all green!" |
+| Tests fail | "test caught something" |
+| Build succeeds | "it builds!" |
+| TypeError in output | "syntax demons!" |
+| Git push | "shipped!" |
+| Deploy to production | "fingers crossed" |
+| Merge conflict | "conflict! *hides*" |
+| User asks to debug | "let's find it" |
+| User asks to refactor | "clean code!" |
+| Nothing happening | zzZ |
+
+47 content rules + 9 prompt rules + stat-weighted fallback quips. Buddy only speaks on turn completion (like Claude Code's design) — silent during tool execution.
+
+### Commands
+
+Type in Codex/OpenCode prompt:
+
+| Command | Effect |
+|---------|--------|
+| `buddy` | Show stats panel (8s) |
+| `buddy stats` | Same |
+| `buddy pet` | Buddy says "purr~ ♥" |
+| `pet` | Same |
+| `buddy rename Sparky` | Rename companion |
+
+### System prompt integration
+
+On launch, buddy injects a companion intro into `instructions.md` so the AI knows about your buddy. When you mention your buddy by name, the AI stays brief and lets the buddy handle reactions.
 
 ---
 
-## 快速体验
+## Standalone usage
+
+Works without any CLI agent:
 
 ```bash
 cd terminal-buddy
 
-# 查看所有宠物
-node cli.js gallery
-
-# 生成你的宠物
-node cli.js hatch $USER
-
-# 实时动画
-node cli.js animate
-
-# 交互式演示（say/pet/info/gallery）
-node demo.js
+node cli.js gallery        # see all 18 species
+node cli.js hatch myname   # generate a companion
+node cli.js animate        # live animation (Ctrl+C to exit)
+node demo.js               # interactive demo
 ```
 
 ---
 
-## 集成到 Codex CLI
-
-### 安装
-
-```bash
-cd terminal-buddy/codex-plugin
-bash install.sh
-```
-
-安装脚本会：
-1. 复制 buddy 文件到 `~/.codex/buddy/`
-2. 配置 `~/.codex/hooks.json`（5 个事件钩子）
-3. 启用 `codex_hooks` feature flag
-
-### 使用
-
-```bash
-~/.codex/buddy/codex-buddy
-```
-
-效果：tmux 上下分屏，上方 Codex CLI，下方 6 行高的 buddy 面板。
-
-### 工作原理
+## Architecture
 
 ```
-┌─────────────────────────────────┐
-│         Codex CLI (TUI)         │
-│                                 │
-│  > hello                        │
-│  • Hi! What can I help with?    │
-│                                 │
-├─────────────────────────────────┤
-│     .----.                      │
-│    / ✦  ✦ \   ── "hey!"        │
-│    |      |                     │
-│    ~`~``~`~                     │
-│     Pixa ★                      │
-└─────────────────────────────────┘
+codex-buddy (shell)
+  ├── First run? → hatch-flow.js (hatching animation + naming)
+  ├── prompt-inject.js (write companion intro to instructions.md)
+  └── tmux split
+       ├── Top pane: codex / opencode
+       └── Bottom pane (6 rows): buddy-panel.js
+            ├── Animated sprite (500ms tick)
+            ├── Speech bubbles (10s display, 3s fade)
+            └── Unix socket ← buddy-hook.sh ← Codex hooks
 ```
 
-- **buddy-panel.js** 在 tmux 底部面板中渲染动画精灵
-- **buddy-hook.sh** 被 Codex 的 hooks 系统在每个事件时调用
-- 通过 **Unix socket** 把事件传给 buddy-panel
-- buddy 根据事件类型说出对应台词：
+**Hook pipeline** (zero impact on agent):
+```
+Codex event → buddy-hook.sh (pure bash, 5 lines, background nc) → exit 0
+                    ↓ (Unix socket, non-blocking)
+              buddy-panel.js → context-reactor.js → reaction
+```
 
-| Codex 事件 | buddy 反应 |
-|-----------|-----------|
-| SessionStart | greeting（"hey!" / "let's code!"） |
-| UserPromptSubmit | idle（"what if we..." / "*stretch*"） |
-| PreToolUse | tool_start（"working on it..." / "on it!"） |
-| PostToolUse | tool_complete（"done!" / "nice!"） |
-| PostToolUse (error) | error（"uh oh..." / "bugs happen!"） |
-| Stop | completion（"looks good!" / "ship it!"） |
+No Node.js fork per event. No API calls. No blocking.
 
-### 卸载
+---
 
-```bash
-rm -rf ~/.codex/buddy
-rm ~/.codex/hooks.json
-codex features disable codex_hooks
+## Files
+
+```
+terminal-buddy/
+├── .codex/INSTALL.md        # Fetch-and-follow install for Codex
+├── .opencode/INSTALL.md     # Fetch-and-follow install for OpenCode
+├── .claude/INSTALL.md       # Fetch-and-follow install for Claude Code
+│
+├── sprites.js               # 18 species × 3 frames ASCII art
+├── companion.js             # Mulberry32 PRNG seed generation
+├── renderer.js              # BuddyRenderer (animation engine)
+├── types.js                 # Species, rarity, eyes, hats, stats
+├── quips.js                 # Stat-weighted reaction pools
+├── terminal.js              # ANSI cursor positioning
+├── bridge.js                # JSON-over-stdio for Go/Rust/Python
+├── cli.js                   # CLI tool
+├── demo.js                  # Interactive demo
+├── index.js                 # Public API
+│
+├── codex-plugin/
+│   ├── install.sh           # Shell installer
+│   ├── codex-buddy          # tmux launcher
+│   ├── buddy-panel.js       # Panel renderer + event handler
+│   ├── buddy-hook.sh        # Lightweight Codex hook (5 lines)
+│   ├── hooks.json           # Hook config for 5 Codex events
+│   ├── context-reactor.js   # Pattern matching reaction engine
+│   ├── hatch-animation.js   # Hatching ceremony (centered, animated)
+│   ├── hatch-flow.js        # First-run orchestrator
+│   ├── storage.js           # Companion persistence
+│   ├── user-profile.js      # Git/shell analysis for stat bonuses
+│   └── prompt-inject.js     # System prompt injection
+│
+├── README.md
+└── CLAUDE_CODE_BUDDY_FEATURES.md  # Source analysis reference
 ```
 
 ---
 
-## 集成到 OpenCode CLI
-
-### 方式：Go + JSON 桥接
-
-OpenCode 使用 Go/Bubble Tea，通过子进程桥接方式集成：
-
-```bash
-cd terminal-buddy-opencode
-# 参考 opencode-patch.md 进行集成
-```
-
-Go 端通过 `bridge.go` 启动 `node bridge.js` 子进程，以 JSON lines 协议通信：
-
-```
-→ {"cmd":"hatch","seed":"user","stream":true}
-← {"type":"frame","lines":["..."]}
-→ {"cmd":"say","text":"nice!"}
-```
-
----
-
-## 核心 API
-
-### companion.js
+## API
 
 ```js
-hatch(seed, name?)  // 生成宠物
-roll(seed)          // 只生成骨架（不含名字）
-```
+import { hatch, BuddyRenderer, pickQuip, renderFrame } from './index.js';
 
-### renderer.js
+// Generate a companion
+const buddy = hatch('seed-string', 'OptionalName');
 
-```js
-const renderer = new BuddyRenderer(companion);
-renderer.start(onFrame);  // 开始动画（500ms/帧）
-renderer.say("hello!");   // 说话（气泡 10 秒后消失）
-renderer.pet();           // 摸摸（爱心动画）
-renderer.stop();          // 停止
-```
+// Animated rendering
+const renderer = new BuddyRenderer(buddy);
+renderer.start((lines, prevCount) => { /* render lines */ });
+renderer.say('hello!');  // speech bubble, 10s
+renderer.pet();          // heart animation, 2.5s
+renderer.stop();
 
-### quips.js
+// Static frame
+const lines = renderFrame(buddy, { reaction: 'nice!' });
 
-```js
-pickQuip(event, stats, seed)  // 按属性加权选台词
-// event: 'greeting' | 'tool_start' | 'tool_complete' | 'error' | 'idle' | 'completion'
-```
-
-### bridge.js（跨语言集成）
-
-```bash
-echo '{"cmd":"hatch","seed":"test","stream":true}' | node bridge.js
-# 输出 JSON 帧流，每 500ms 一帧
+// Stat-weighted quip
+const quip = pickQuip('completion', buddy.stats, Date.now());
 ```
 
 ---
 
-## 技术细节
+## Credits
 
-- **零外部依赖**：核心包只用 Node.js 内置模块
-- **确定性 PRNG**：Mulberry32 算法 + FNV-1a 哈希
-- **动画系统**：3 帧 idle 序列 [0,0,0,0,1,0,0,0,-1,0,0,2,0,0,0]，-1 = 眨眼
-- **气泡系统**：显示 20 tick（~10s），最后 6 tick 渐隐
-- **台词权重**：高 SNARK 属性的宠物更可能说 "ez" / "ship it!"
-- **ANSI 渲染**：绝对定位（ESC[row;colH），不依赖 React/Ink
-- **跨语言桥接**：JSON lines over stdin/stdout，支持 Go/Rust/Python 消费
+Buddy system reverse-engineered from [Claude Code](https://claude.ai/code) v2.1.88 source maps. Original implementation by Anthropic. This project extracts, reconstructs, and extends the companion system for use in other CLI agents.
+
+Original source files analyzed:
+- `src/buddy/CompanionSprite.tsx` — React/Ink sprite component
+- `src/buddy/sprites.ts` — ASCII art data
+- `src/buddy/companion.ts` — Deterministic generation
+- `src/buddy/types.ts` — Type definitions
+- `src/buddy/prompt.ts` — System prompt integration
+
+See [CLAUDE_CODE_BUDDY_FEATURES.md](CLAUDE_CODE_BUDDY_FEATURES.md) for the complete source analysis.
 
 ---
 
-## 源码来源
+## License
 
-从 Claude Code 2.1.88 的 `cli.js.map` 中逆向还原，涉及以下原始文件：
-
-- `src/buddy/CompanionSprite.tsx` — React/Ink 组件（参考用于 Ink 版）
-- `src/buddy/sprites.ts` — 18 种宠物的 ASCII art 数据
-- `src/buddy/companion.ts` — 种子生成逻辑
-- `src/buddy/types.ts` — 类型定义
-- `src/buddy/useBuddyNotification.tsx` — 通知钩子
-- `src/buddy/prompt.ts` — 系统提示词
+MIT
