@@ -21,7 +21,7 @@ Your buddy watches your coding session, reacts to errors, celebrates fixes, and 
 Tell Codex:
 
 ```
-Fetch and follow instructions from https://raw.githubusercontent.com/anthropics/anycli-buddy/refs/heads/main/.codex/INSTALL.md
+Fetch and follow instructions from https://raw.githubusercontent.com/FunseaAI/anycli-buddy/refs/heads/main/.codex/INSTALL.md
 ```
 
 ### OpenCode
@@ -29,13 +29,13 @@ Fetch and follow instructions from https://raw.githubusercontent.com/anthropics/
 Tell OpenCode:
 
 ```
-Fetch and follow instructions from https://raw.githubusercontent.com/anthropics/anycli-buddy/refs/heads/main/.opencode/INSTALL.md
+Fetch and follow instructions from https://raw.githubusercontent.com/FunseaAI/anycli-buddy/refs/heads/main/.opencode/INSTALL.md
 ```
 
 ### Manual (shell)
 
 ```bash
-git clone https://github.com/anthropics/anycli-buddy.git
+git clone https://github.com/FunseaAI/anycli-buddy.git
 cd anycli-buddy/codex-plugin && bash install.sh
 ```
 

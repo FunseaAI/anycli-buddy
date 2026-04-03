@@ -11,7 +11,7 @@ A coding companion that lives in your terminal — animated ASCII pet with conte
 
 1. **Clone the anycli-buddy repository:**
    ```bash
-   git clone https://github.com/anthropics/anycli-buddy.git ~/.codex/buddy-repo
+   git clone https://github.com/FunseaAI/anycli-buddy.git ~/.codex/buddy-repo
    ```
 
 2. **Create the buddy home directory and copy files:**
