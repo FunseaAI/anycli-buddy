@@ -1,6 +1,6 @@
-# terminal-buddy
+# anycli-buddy
 
-An animated ASCII companion for your terminal coding agent. Extracted from Claude Code's buddy system and rebuilt to work with **Codex CLI**, **OpenCode**, **Claude Code**, or any terminal.
+An animated ASCII companion for your terminal coding agent. Works with **Codex CLI**, **OpenCode**, and any terminal.
 
 ```
    .----.
@@ -21,7 +21,7 @@ Your buddy watches your coding session, reacts to errors, celebrates fixes, and 
 Tell Codex:
 
 ```
-Fetch and follow instructions from https://raw.githubusercontent.com/anthropics/terminal-buddy/refs/heads/main/.codex/INSTALL.md
+Fetch and follow instructions from https://raw.githubusercontent.com/anthropics/anycli-buddy/refs/heads/main/.codex/INSTALL.md
 ```
 
 ### OpenCode
@@ -29,22 +29,14 @@ Fetch and follow instructions from https://raw.githubusercontent.com/anthropics/
 Tell OpenCode:
 
 ```
-Fetch and follow instructions from https://raw.githubusercontent.com/anthropics/terminal-buddy/refs/heads/main/.opencode/INSTALL.md
-```
-
-### Claude Code
-
-Tell Claude Code:
-
-```
-Fetch and follow instructions from https://raw.githubusercontent.com/anthropics/terminal-buddy/refs/heads/main/.claude/INSTALL.md
+Fetch and follow instructions from https://raw.githubusercontent.com/anthropics/anycli-buddy/refs/heads/main/.opencode/INSTALL.md
 ```
 
 ### Manual (shell)
 
 ```bash
-git clone https://github.com/anthropics/terminal-buddy.git
-cd terminal-buddy/codex-plugin && bash install.sh
+git clone https://github.com/anthropics/anycli-buddy.git
+cd anycli-buddy/codex-plugin && bash install.sh
 ```
 
 ---
@@ -135,7 +127,7 @@ Your buddy reads the actual conversation content and responds to what's happenin
 | User asks to refactor | "clean code!" |
 | Nothing happening | zzZ |
 
-47 content rules + 9 prompt rules + stat-weighted fallback quips. Buddy only speaks on turn completion (like Claude Code's design) — silent during tool execution.
+47 content rules + 9 prompt rules + stat-weighted fallback quips. Buddy only speaks on turn completion — silent during tool execution.
 
 ### Commands
 
@@ -160,7 +152,7 @@ On launch, buddy injects a companion intro into `instructions.md` so the AI know
 Works without any CLI agent:
 
 ```bash
-cd terminal-buddy
+cd anycli-buddy
 
 node cli.js gallery        # see all 18 species
 node cli.js hatch myname   # generate a companion
@@ -181,14 +173,14 @@ codex-buddy (shell)
        └── Bottom pane (6 rows): buddy-panel.js
             ├── Animated sprite (500ms tick)
             ├── Speech bubbles (10s display, 3s fade)
-            └── Unix socket ← buddy-hook.sh ← Codex hooks
+            └── Unix socket ← buddy-hook.sh ← CLI hooks
 ```
 
 **Hook pipeline** (zero impact on agent):
 ```
-Codex event → buddy-hook.sh (pure bash, 5 lines, background nc) → exit 0
-                    ↓ (Unix socket, non-blocking)
-              buddy-panel.js → context-reactor.js → reaction
+CLI event → buddy-hook.sh (pure bash, 5 lines, background nc) → exit 0
+                  ↓ (Unix socket, non-blocking)
+            buddy-panel.js → context-reactor.js → reaction
 ```
 
 No Node.js fork per event. No API calls. No blocking.
@@ -198,10 +190,9 @@ No Node.js fork per event. No API calls. No blocking.
 ## Files
 
 ```
-terminal-buddy/
+anycli-buddy/
 ├── .codex/INSTALL.md        # Fetch-and-follow install for Codex
 ├── .opencode/INSTALL.md     # Fetch-and-follow install for OpenCode
-├── .claude/INSTALL.md       # Fetch-and-follow install for Claude Code
 │
 ├── sprites.js               # 18 species × 3 frames ASCII art
 ├── companion.js             # Mulberry32 PRNG seed generation
@@ -218,8 +209,8 @@ terminal-buddy/
 │   ├── install.sh           # Shell installer
 │   ├── codex-buddy          # tmux launcher
 │   ├── buddy-panel.js       # Panel renderer + event handler
-│   ├── buddy-hook.sh        # Lightweight Codex hook (5 lines)
-│   ├── hooks.json           # Hook config for 5 Codex events
+│   ├── buddy-hook.sh        # Lightweight hook (5 lines)
+│   ├── hooks.json           # Hook config for 5 events
 │   ├── context-reactor.js   # Pattern matching reaction engine
 │   ├── hatch-animation.js   # Hatching ceremony (centered, animated)
 │   ├── hatch-flow.js        # First-run orchestrator
@@ -227,8 +218,7 @@ terminal-buddy/
 │   ├── user-profile.js      # Git/shell analysis for stat bonuses
 │   └── prompt-inject.js     # System prompt injection
 │
-├── README.md
-└── CLAUDE_CODE_BUDDY_FEATURES.md  # Source analysis reference
+└── README.md
 ```
 
 ---
@@ -254,21 +244,6 @@ const lines = renderFrame(buddy, { reaction: 'nice!' });
 // Stat-weighted quip
 const quip = pickQuip('completion', buddy.stats, Date.now());
 ```
-
----
-
-## Credits
-
-Buddy system reverse-engineered from [Claude Code](https://claude.ai/code) v2.1.88 source maps. Original implementation by Anthropic. This project extracts, reconstructs, and extends the companion system for use in other CLI agents.
-
-Original source files analyzed:
-- `src/buddy/CompanionSprite.tsx` — React/Ink sprite component
-- `src/buddy/sprites.ts` — ASCII art data
-- `src/buddy/companion.ts` — Deterministic generation
-- `src/buddy/types.ts` — Type definitions
-- `src/buddy/prompt.ts` — System prompt integration
-
-See [CLAUDE_CODE_BUDDY_FEATURES.md](CLAUDE_CODE_BUDDY_FEATURES.md) for the complete source analysis.
 
 ---
 

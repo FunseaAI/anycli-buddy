@@ -1,4 +1,4 @@
-# Installing terminal-buddy for Codex CLI
+# Installing anycli-buddy for Codex CLI
 
 A coding companion that lives in your terminal — animated ASCII pet with context-aware reactions.
 
@@ -9,9 +9,9 @@ A coding companion that lives in your terminal — animated ASCII pet with conte
 
 ## Installation
 
-1. **Clone the terminal-buddy repository:**
+1. **Clone the anycli-buddy repository:**
    ```bash
-   git clone https://github.com/anthropics/terminal-buddy.git ~/.codex/buddy-repo
+   git clone https://github.com/anthropics/anycli-buddy.git ~/.codex/buddy-repo
    ```
 
 2. **Create the buddy home directory and copy files:**

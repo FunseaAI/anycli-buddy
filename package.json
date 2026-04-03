@@ -1,11 +1,11 @@
 {
-  "name": "terminal-buddy",
+  "name": "anycli-buddy",
   "version": "1.0.0",
-  "description": "Standalone terminal companion sprite system extracted from Claude Code buddy",
+  "description": "Animated ASCII companion for terminal coding agents — works with Codex, OpenCode, and any CLI",
   "type": "module",
   "main": "index.js",
   "bin": {
-    "terminal-buddy": "./cli.js"
+    "anycli-buddy": "./cli.js"
   },
   "scripts": {
     "start": "node cli.js",
