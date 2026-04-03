@@ -14,6 +14,14 @@ Tell Codex:
 Fetch and follow instructions from https://raw.githubusercontent.com/anthropics/terminal-buddy/refs/heads/main/.codex/INSTALL.md
 ```
 
+### OpenCode
+
+Tell OpenCode:
+
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/anthropics/terminal-buddy/refs/heads/main/.opencode/INSTALL.md
+```
+
 ### Claude Code
 
 Tell Claude Code:
