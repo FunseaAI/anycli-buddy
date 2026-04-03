@@ -44,6 +44,14 @@ Tell OpenCode:
 Fetch and follow instructions from https://raw.githubusercontent.com/FunseaAI/anycli-buddy/refs/heads/main/.opencode/INSTALL.md
 ```
 
+### One-liner (OpenCode)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install-opencode.sh | bash
+```
+
+Then run: `opencode-buddy`
+
 ### Manual (shell)
 
 ```bash

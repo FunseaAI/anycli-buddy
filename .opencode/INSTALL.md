@@ -2,7 +2,13 @@
 
 A coding companion that lives in your terminal — animated ASCII pet with context-aware reactions.
 
-## Prerequisites
+## Quick install
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install-opencode.sh | bash
+```
+
+## Prerequisites (if installing manually)
 - Node.js >= 18
 - tmux (`brew install tmux` on macOS, `apt install tmux` on Linux)
 - Git
