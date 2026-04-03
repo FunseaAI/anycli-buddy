@@ -1,3 +1,11 @@
+<p align="center">
+  <a href="./README.md">English</a> ·
+  <a href="./docs/README.zh.md">中文</a> ·
+  <a href="./docs/README.ja.md">日本語</a> ·
+  <a href="./docs/README.fr.md">Français</a> ·
+  <a href="./docs/README.ru.md">Русский</a>
+</p>
+
 <h1 align="center">🐾 AnyCLI-Buddy</h1>
 
 <p align="center">
