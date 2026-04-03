@@ -1,4 +1,4 @@
-<h1 align="center">🐾 anycli-buddy</h1>
+<h1 align="center">🐾 AnyCLI-Buddy</h1>
 
 <p align="center">
   <strong>An animated ASCII companion for your terminal coding agent.</strong><br>
