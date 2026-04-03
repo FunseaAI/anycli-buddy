@@ -21,13 +21,9 @@
   <a href="#api">API</a>
 </p>
 
-```
-      .----.
-     / ✦  ✦ \    ── "bug squashed!"
-     |      |
-     ~`~``~`~
-      Pixa ★
-```
+<p align="center">
+  <img src="docs/demo.gif" alt="AnyCLI-Buddy Demo" width="600">
+</p>
 
 ---
 
