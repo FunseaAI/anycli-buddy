@@ -31,30 +31,27 @@
 
 ## ⚡ ワンコマンドインストール
 
-<table>
-<tr>
-<td><b>Codex CLI</b></td>
-<td>
+### Codex CLI
 
 ```bash
+# ステップ1：インストール
 curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install.sh | bash
+
+# ステップ2：実行（任意のプロジェクトディレクトリから）
+codex-buddy
 ```
 
-</td>
-</tr>
-<tr>
-<td><b>OpenCode</b></td>
-<td>
+### OpenCode
 
 ```bash
+# ステップ1：インストール
 curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install-opencode.sh | bash
+
+# ステップ2：実行（任意のプロジェクトディレクトリから）
+opencode-buddy
 ```
 
-</td>
-</tr>
-</table>
-
-プロジェクトディレクトリで **`codex-buddy`** または **`opencode-buddy`** を実行。
+> 初回起動時に孵化アニメーションが再生されます — 名前を付けて、ステータスが一つずつ表示されます。以降は自動的にバディが表示されます。
 
 ---
 

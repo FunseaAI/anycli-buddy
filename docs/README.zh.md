@@ -35,30 +35,27 @@
 
 ## ⚡ 一键安装
 
-<table>
-<tr>
-<td><b>Codex CLI</b></td>
-<td>
+### Codex CLI
 
 ```bash
+# 第一步：安装
 curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install.sh | bash
+
+# 第二步：运行（在任意项目目录）
+codex-buddy
 ```
 
-</td>
-</tr>
-<tr>
-<td><b>OpenCode</b></td>
-<td>
+### OpenCode
 
 ```bash
+# 第一步：安装
 curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install-opencode.sh | bash
+
+# 第二步：运行（在任意项目目录）
+opencode-buddy
 ```
 
-</td>
-</tr>
-</table>
-
-然后在任意项目目录运行 **`codex-buddy`** 或 **`opencode-buddy`**。
+> 首次运行会播放孵化动画 —— 给宠物起名，看属性逐条揭晓。之后每次启动 buddy 自动出现。
 
 <details>
 <summary>💬 或者让 AI 代理帮你安装</summary>

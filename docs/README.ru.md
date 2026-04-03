@@ -31,30 +31,27 @@
 
 ## ⚡ Установка одной командой
 
-<table>
-<tr>
-<td><b>Codex CLI</b></td>
-<td>
+### Codex CLI
 
 ```bash
+# Шаг 1: Установка
 curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install.sh | bash
+
+# Шаг 2: Запуск (из любой директории проекта)
+codex-buddy
 ```
 
-</td>
-</tr>
-<tr>
-<td><b>OpenCode</b></td>
-<td>
+### OpenCode
 
 ```bash
+# Шаг 1: Установка
 curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install-opencode.sh | bash
+
+# Шаг 2: Запуск (из любой директории проекта)
+opencode-buddy
 ```
 
-</td>
-</tr>
-</table>
-
-Запускайте **`codex-buddy`** или **`opencode-buddy`** из любой директории проекта.
+> При первом запуске проигрывается анимация вылупления — дайте имя питомцу и наблюдайте за появлением характеристик. После этого бадди появляется автоматически.
 
 ---
 

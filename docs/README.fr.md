@@ -31,30 +31,27 @@
 
 ## ⚡ Installation en une commande
 
-<table>
-<tr>
-<td><b>Codex CLI</b></td>
-<td>
+### Codex CLI
 
 ```bash
+# Étape 1 : Installer
 curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install.sh | bash
+
+# Étape 2 : Lancer (depuis n'importe quel répertoire)
+codex-buddy
 ```
 
-</td>
-</tr>
-<tr>
-<td><b>OpenCode</b></td>
-<td>
+### OpenCode
 
 ```bash
+# Étape 1 : Installer
 curl -fsSL https://raw.githubusercontent.com/FunseaAI/anycli-buddy/main/install-opencode.sh | bash
+
+# Étape 2 : Lancer (depuis n'importe quel répertoire)
+opencode-buddy
 ```
 
-</td>
-</tr>
-</table>
-
-Puis lancez **`codex-buddy`** ou **`opencode-buddy`** depuis n'importe quel répertoire.
+> Au premier lancement, une animation d'éclosion se joue — nommez votre compagnon et regardez ses stats apparaître. Ensuite, votre buddy apparaît automatiquement.
 
 ---
 
